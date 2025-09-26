@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voidborn - Launch Page</title>
+    <style>
+        /* === Retro 90s UI skin with extra flair === */
+        :root {
+            --panel-bg: #c0c0c0;
+            --panel-accent: #000080;
+            --bevel-light: #fff;
+            --bevel-dark: #808080;
+            --font: "MS Sans Serif", Geneva, sans-serif;
+            --neon-glow: #00ff00;
+            --error-red: #ff0000;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: var(--font);
+            background: #00383b;
+            color: #000;
+            overflow: hidden;
+        }
+        #app {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        #simulation {
+            flex: 1;
+            background: #000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+        canvas#bgCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+        }
+        #crtOverlay {
+            pointer-events: none;
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            mix-blend-mode: overlay;
+            opacity: 0.45;
+            z-index: 50;
+        }
+        /* Main UI panel with neon glow */
+        #ui {
+            width: 650px;
+            padding: 12px;
+            background: var(--panel-bg);
+            border: 4px outset var(--bevel-light);
+            box-shadow: inset -3px -3px 6px var(--bevel-dark), 0 0 10px var(--neon-glow);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow: auto;
+            height: 85vh;
+            max-height: 850px;
+            margin: auto;
+            z-index: 100;
+            position: relative;
+            animation: flicker 3s infinite;
+        }
+        @keyframes flicker {
+            0%, 100% { box-shadow: inset -3px -3px 6px var(--bevel-dark), 0 0 10px var(--neon-glow); }
+            50% { box-shadow: inset -3px -3px 6px var(--bevel-dark), 0 0 5px var(--neon-glow); }
+        }
+        header#title {
+            background: var(--panel-accent);
+            color: #fff;
+            padding: 8px;
+            border: 3px groove var(--bevel-dark);
+            text-align: center;
+            font-size: 22px;
+            margin: 0 0 6px 0;
+            text-shadow: 0 0 5px var(--neon-glow);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        p {
+            font-size: 14px;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: #fff;
+            border: 2px inset var(--bevel-dark);
+            box-shadow: 0 0 5px var(--error-red);
+        }
+        /* Collapsible retro lists for features */
+        details {
+            background: #e5e5e5;
+            border: 3px groove var(--bevel-dark);
+            padding: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+        details[open] {
+            box-shadow: inset 2px 2px 0 rgba(0,0,0,0.1), 0 0 8px var(--neon-glow);
+        }
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            padding: 4px;
+            background: linear-gradient(to right, var(--panel-accent), #0000c0);
+            color: #fff;
+            border-radius: 3px;
+        }
+        .feature-list {
+            list-style: none;
+        }
+        .feature-list li {
+            background: #fff;
+            border: 2px inset var(--bevel-dark);
+            padding: 8px;
+            margin: 8px 0;
+            font-size: 13px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+        .feature-list li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px var(--neon-glow);
+        }
+        .feature-list li::before {
+            content: '★';
+            color: var(--neon-glow);
+            margin-right: 8px;
+        }
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border: 3px outset var(--bevel-light);
+            background: #e0e0e0;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 6px 0;
+            text-align: center;
+            text-decoration: none;
+            color: #000;
+            text-shadow: 0 0 3px var(--neon-glow);
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            background: #d0d0d0;
+            box-shadow: 0 0 8px var(--neon-glow);
+        }
+        .btn:active {
+            border-style: inset;
+        }
+        .play-button {
+            font-size: 16px;
+            width: 100%;
+            background: linear-gradient(to right, #ff4444, #ff0000);
+            color: #fff;
+            border: 3px outset var(--bevel-light);
+            animation: neon 1.5s infinite;
+        }
+        @keyframes neon {
+            0%, 100% { box-shadow: 0 0 10px var(--error-red); }
+            50% { box-shadow: 0 0 15px var(--error-red); }
+        }
+        .social {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .social a {
+            color: #000;
+            text-decoration: none;
+            font-size: 18px;
+            text-shadow: 0 0 5px var(--neon-glow);
+            transition: transform 0.2s;
+        }
+        .social a:hover {
+            transform: scale(1.2);
+        }
+        footer {
+            margin-top: auto;
+            font-size: 12px;
+            text-align: center;
+            opacity: 0.8;
+            color: #fff;
+            text-shadow: 0 0 3px var(--neon-glow);
+        }
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            #ui {
+                width: 90%;
+                height: 90vh;
+            }
+            header#title {
+                font-size: 18px;
+            }
+            .play-button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="simulation">
+            <canvas id="bgCanvas"></canvas>
+            <canvas id="crtOverlay"></canvas>
+        </div>
+
+        <div id="ui">
+            <header id="title">🕹️ Voidborn</header>
+
+            <p>Boot up a retro-fueled universe simulation! Watch NPCs colonize a 4000x3000 grid, forge factions, climb tech tiers, and battle cosmic chaos. In God Mode, wield Observer Points to unleash calamities, summon UFOs, or spark fertility zones!</p>
+
+            <details open>
+                <summary>Game Features</summary>
+                <ul class="feature-list">
+                    <li>Procedural Universe: Navigate a massive 4000x3000 grid teeming with resources, buildings, and dynamic NPCs.</li>
+                    <li>Tech Progression: Evolve from Pioneer to Galactic with farms, mines, temples, factories, portals, and epic wonders.</li>
+                    <li>God Mode: Spend Observer Points to trigger blackholes, UFO boons, or fertility zones to shape the simulation.</li>
+                    <li>Factions & Events: Witness faction wars, alliances, and cosmic events like UFO visits or cataclysmic disasters.</li>
+                    <li>Retro 90s UI: Rock a Windows 95-style interface with minimaps, event logs, and colony stats.</li>
+                    <li>Exploration & Building: NPCs with Explorer, Builder, or Warrior traits roam, construct, and unearth rare artifacts.</li>
+                </ul>
+            </details>
+
+            <a href="https://theonleoneneo.github.io/Voidborn-V2/" class="btn play-button">Enter the Void!</a>
+
+            <div class="social">
+                <a href="https://x.com/voidbornspace">🐦</a>
+            </div>
+
+            <footer>&copy; 2025 Voidborn.</footer>
+        </div>
+    </div>
+
+    <script>
+        // Background stars and nebula simulation for retro space vibe
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        const crt = document.getElementById('crtOverlay');
+        const crtCtx = crt.getContext('2d');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            crt.width = canvas.width;
+            crt.height = canvas.height;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Render stars and nebula
+        function renderStars() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Stars
+            const starCount = 200;
+            ctx.fillStyle = '#001b1b';
+            for (let s = 0; s < starCount; s++) {
+                const sx = (s * 37 + Date.now() * 0.0003) % canvas.width;
+                const sy = (s * 97 + (s % 5) * 3) % canvas.height;
+                ctx.fillRect(sx, sy, Math.random() > 0.8 ? 2 : 1, Math.random() > 0.8 ? 2 : 1);
+            }
+            // Nebula effect
+            ctx.fillStyle = 'rgba(0, 100, 100, 0.1)';
+            for (let n = 0; n < 5; n++) {
+                const nx = (Math.sin(Date.now() * 0.0001 + n) * 200 + canvas.width / 2) % canvas.width;
+                const ny = (Math.cos(Date.now() * 0.0002 + n) * 200 + canvas.height / 2) % canvas.height;
+                ctx.beginPath();
+                ctx.arc(nx, ny, 100, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Render CRT overlay with scanlines
+        function renderCRT() {
+            crtCtx.clearRect(0, 0, crt.width, crt.height);
+            crtCtx.fillStyle = 'rgba(0,0,0,0.15)';
+            crtCtx.fillRect(0, 0, crt.width, crt.height);
+            crtCtx.fillStyle = 'rgba(0,0,0,0.05)';
+            for (let y = 0; y < crt.height; y += 2) {
+                crtCtx.fillRect(0, y, crt.width, 1);
+            }
+            crtCtx.strokeStyle = 'rgba(255,255,255,0.03)';
+            crtCtx.strokeRect(1, 1, crt.width - 2, crt.height - 2);
+        }
+
+        // Animation loop
+        function animate() {
+            renderStars();
+            renderCRT();
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
