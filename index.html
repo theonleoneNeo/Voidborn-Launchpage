@@ -5,15 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voidborn - Launch Page</title>
     <style>
-        /* === Retro 90s UI skin with extra flair === */
+        /* === Professional Space-Themed UI === */
         :root {
-            --panel-bg: #c0c0c0;
-            --panel-accent: #000080;
-            --bevel-light: #fff;
-            --bevel-dark: #808080;
-            --font: "MS Sans Serif", Geneva, sans-serif;
-            --neon-glow: #00ff00;
-            --error-red: #ff0000;
+            --panel-bg: #ffffff;
+            --panel-accent: #1a1a2e;
+            --text-primary: #0f0f23;
+            --text-secondary: #4a4a60;
+            --accent-blue: #0f3460;
+            --accent-gold: #d4af37;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         * {
             margin: 0;
@@ -24,8 +26,8 @@
             height: 100%;
             margin: 0;
             font-family: var(--font);
-            background: #00383b;
-            color: #000;
+            background: linear-gradient(135deg, #0c0c1a 0%, #1a1a2e 100%);
+            color: var(--text-primary);
             overflow: hidden;
         }
         #app {
@@ -50,7 +52,6 @@
             display: block;
             width: 100%;
             height: 100%;
-            image-rendering: pixelated;
         }
         #crtOverlay {
             pointer-events: none;
@@ -60,164 +61,200 @@
             right: 0;
             bottom: 0;
             mix-blend-mode: overlay;
-            opacity: 0.45;
+            opacity: 0.2;
             z-index: 50;
         }
-        /* Main UI panel with neon glow */
+        /* Main UI panel - Clean and professional */
         #ui {
             width: 650px;
-            padding: 12px;
+            padding: 24px;
             background: var(--panel-bg);
-            border: 4px outset var(--bevel-light);
-            box-shadow: inset -3px -3px 6px var(--bevel-dark), 0 0 10px var(--neon-glow);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow), 0 0 20px rgba(26, 26, 46, 0.1);
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 16px;
             overflow: auto;
             height: 85vh;
             max-height: 850px;
             margin: auto;
             z-index: 100;
             position: relative;
-            animation: flicker 3s infinite;
-        }
-        @keyframes flicker {
-            0%, 100% { box-shadow: inset -3px -3px 6px var(--bevel-dark), 0 0 10px var(--neon-glow); }
-            50% { box-shadow: inset -3px -3px 6px var(--bevel-dark), 0 0 5px var(--neon-glow); }
+            border-radius: 8px;
         }
         header#title {
             background: var(--panel-accent);
             color: #fff;
-            padding: 8px;
-            border: 3px groove var(--bevel-dark);
+            padding: 16px;
+            border-radius: 4px;
             text-align: center;
-            font-size: 22px;
-            margin: 0 0 6px 0;
-            text-shadow: 0 0 5px var(--neon-glow);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+            box-shadow: var(--shadow);
         }
         p {
-            font-size: 14px;
-            margin-bottom: 12px;
-            padding: 8px;
-            background: #fff;
-            border: 2px inset var(--bevel-dark);
-            box-shadow: 0 0 5px var(--error-red);
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
         }
-        /* Collapsible retro lists for features */
+        /* Collapsible sections - Subtle */
         details {
-            background: #e5e5e5;
-            border: 3px groove var(--bevel-dark);
-            padding: 8px;
-            margin-bottom: 8px;
-            transition: all 0.3s;
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            margin-bottom: 16px;
+            border-radius: 4px;
+            transition: box-shadow 0.2s ease;
         }
         details[open] {
-            box-shadow: inset 2px 2px 0 rgba(0,0,0,0.1), 0 0 8px var(--neon-glow);
+            box-shadow: var(--shadow);
         }
         summary {
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             outline: none;
-            padding: 4px;
-            background: linear-gradient(to right, var(--panel-accent), #0000c0);
-            color: #fff;
-            border-radius: 3px;
+            padding: 8px;
+            color: var(--accent-blue);
+            border-radius: 4px;
         }
         .feature-list {
             list-style: none;
+            padding-left: 0;
+            margin-top: 12px;
         }
         .feature-list li {
             background: #fff;
-            border: 2px inset var(--bevel-dark);
-            padding: 8px;
+            border: 1px solid var(--border-color);
+            padding: 12px;
             margin: 8px 0;
-            font-size: 13px;
+            font-size: 14px;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
             position: relative;
-            transition: transform 0.2s;
+            transition: box-shadow 0.2s ease;
         }
         .feature-list li:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 5px var(--neon-glow);
+            box-shadow: 0 4px 12px rgba(15, 52, 96, 0.15);
         }
         .feature-list li::before {
-            content: '★';
-            color: var(--neon-glow);
-            margin-right: 8px;
+            content: '•';
+            color: var(--accent-gold);
+            margin-right: 12px;
+            font-size: 18px;
         }
-        /* Buttons */
+        /* Buttons - Professional style */
         .btn {
             display: inline-block;
-            padding: 8px 16px;
-            border: 3px outset var(--bevel-light);
-            background: #e0e0e0;
-            font-weight: bold;
+            padding: 12px 24px;
+            border: 1px solid var(--border-color);
+            background: #fff;
+            font-weight: 500;
             cursor: pointer;
-            margin: 6px 0;
+            margin: 8px 0;
             text-align: center;
             text-decoration: none;
-            color: #000;
-            text-shadow: 0 0 3px var(--neon-glow);
-            transition: all 0.2s;
+            color: var(--text-primary);
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.2s ease;
         }
         .btn:hover {
-            background: #d0d0d0;
-            box-shadow: 0 0 8px var(--neon-glow);
-        }
-        .btn:active {
-            border-style: inset;
+            box-shadow: 0 4px 12px rgba(15, 52, 96, 0.15);
         }
         .play-button {
-            font-size: 16px;
+            font-size: 18px;
             width: 100%;
-            background: linear-gradient(to right, #ff4444, #ff0000);
+            background: linear-gradient(135deg, var(--accent-blue), #16213e);
             color: #fff;
-            border: 3px outset var(--bevel-light);
-            animation: neon 1.5s infinite;
+            border: none;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(15, 52, 96, 0.3);
         }
-        @keyframes neon {
-            0%, 100% { box-shadow: 0 0 10px var(--error-red); }
-            50% { box-shadow: 0 0 15px var(--error-red); }
+        .play-button:hover {
+            box-shadow: 0 6px 16px rgba(15, 52, 96, 0.4);
+            transform: translateY(-1px);
+        }
+        /* Action row */
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .action-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .livestream-btn, .contract-btn {
+            font-size: 14px;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), #16213e);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.2s ease;
+            width: 100%;
+        }
+        .livestream-btn:hover, .contract-btn:hover {
+            box-shadow: 0 4px 12px rgba(15, 52, 96, 0.3);
+        }
+        .copy-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-style: italic;
         }
         .social {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin: 12px 0;
+            gap: 24px;
+            margin: 20px 0;
         }
         .social a {
-            color: #000;
+            color: var(--text-primary);
             text-decoration: none;
-            font-size: 18px;
-            text-shadow: 0 0 5px var(--neon-glow);
-            transition: transform 0.2s;
+            font-size: 24px;
+            transition: color 0.2s ease;
         }
         .social a:hover {
-            transform: scale(1.2);
+            color: var(--accent-gold);
         }
         footer {
             margin-top: auto;
             font-size: 12px;
             text-align: center;
-            opacity: 0.8;
+            opacity: 0.7;
             color: #fff;
-            text-shadow: 0 0 3px var(--neon-glow);
         }
         /* Responsiveness */
         @media (max-width: 768px) {
             #ui {
                 width: 90%;
                 height: 90vh;
+                padding: 16px;
             }
             header#title {
-                font-size: 18px;
+                font-size: 24px;
             }
             .play-button {
-                font-size: 14px;
+                font-size: 16px;
+            }
+            .action-row {
+                flex-direction: column;
+            }
+            .social {
+                gap: 16px;
             }
         }
     </style>
@@ -232,21 +269,30 @@
         <div id="ui">
             <header id="title">🕹️ Voidborn</header>
 
-            <p>Boot up a retro-fueled universe simulation! Watch NPCs colonize a 4000x3000 grid, forge factions, climb tech tiers, and battle cosmic chaos.</p>
+            <p>Boot up a retro-fueled universe simulation! Watch NPCs colonize a 4000x3000 grid, forge factions, climb tech tiers, and battle cosmic chaos!</p>
 
             <details open>
                 <summary>Game Features</summary>
                 <ul class="feature-list">
                     <li>Procedural Universe: Navigate a massive 4000x3000 grid teeming with resources, buildings, and dynamic NPCs.</li>
                     <li>Tech Progression: Evolve from Pioneer to Galactic with farms, mines, temples, factories, portals, and epic wonders.</li>
-                    <li>God Mode: Spend Observer Points to trigger blackholes, UFO boons, or fertility zones to shape the simulation.</li>
                     <li>Factions & Events: Witness faction wars, alliances, and cosmic events like UFO visits or cataclysmic disasters.</li>
                     <li>Retro 90s UI: Rock a Windows 95-style interface with minimaps, event logs, and colony stats.</li>
-                    <li>CA: F32iSjUL7fT2ZjCRYpjwuLjLE3SCuNVWzxu8xtgPpump </li>
+                    <li>Exploration & Building: NPCs with Explorer, Builder, or Warrior traits roam, construct, and unearth rare artifacts.</li>
                 </ul>
             </details>
 
-            <a href="https://theonleoneneo.github.io/VOIDBORN-v3.3/" class="btn play-button">Enter the Void!</a>
+            <a href="https://theonleoneneo.github.io/VOIDBORN-v3.4/" class="btn play-button">Enter the Void!</a>
+
+            <div class="action-row">
+                <div class="action-item">
+                    <button class="livestream-btn btn" onclick="openLivestream()">LIVESTREAM</button>
+                </div>
+                <div class="action-item">
+                    <button class="contract-btn btn" onclick="copyContract()">Contract Address</button>
+                    <small class="copy-hint">Click to copy</small>
+                </div>
+            </div>
 
             <div class="social">
                 <a href="https://x.com/voidbornspace">🐦</a>
@@ -258,7 +304,7 @@
     </div>
 
     <script>
-        // Background stars and nebula simulation for retro space vibe
+        // Static space background
         const canvas = document.getElementById('bgCanvas');
         const ctx = canvas.getContext('2d');
         const crt = document.getElementById('crtOverlay');
@@ -273,30 +319,30 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // Render stars and nebula
+        // Render static stars
         function renderStars() {
             ctx.fillStyle = '#000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            // Stars
+            // Static stars
             const starCount = 200;
-            ctx.fillStyle = '#001b1b';
             for (let s = 0; s < starCount; s++) {
-                const sx = (s * 37 + Date.now() * 0.0003) % canvas.width;
-                const sy = (s * 97 + (s % 5) * 3) % canvas.height;
-                ctx.fillRect(sx, sy, Math.random() > 0.8 ? 2 : 1, Math.random() > 0.8 ? 2 : 1);
+                const sx = (s * 37) % canvas.width;
+                const sy = (s * 97) % canvas.height;
+                ctx.fillStyle = '#001b1b';
+                ctx.fillRect(sx, sy, 1, 1);
             }
-            // Nebula effect
+            // Static nebula
             ctx.fillStyle = 'rgba(0, 100, 100, 0.1)';
             for (let n = 0; n < 5; n++) {
-                const nx = (Math.sin(Date.now() * 0.0001 + n) * 200 + canvas.width / 2) % canvas.width;
-                const ny = (Math.cos(Date.now() * 0.0002 + n) * 200 + canvas.height / 2) % canvas.height;
+                const nx = canvas.width / 2 + Math.sin(n) * 200;
+                const ny = canvas.height / 2 + Math.cos(n) * 200;
                 ctx.beginPath();
                 ctx.arc(nx, ny, 100, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        // Render CRT overlay with scanlines
+        // Static CRT overlay
         function renderCRT() {
             crtCtx.clearRect(0, 0, crt.width, crt.height);
             crtCtx.fillStyle = 'rgba(0,0,0,0.15)';
@@ -309,19 +355,30 @@
             crtCtx.strokeRect(1, 1, crt.width - 2, crt.height - 2);
         }
 
-        // Animation loop
-        function animate() {
-            renderStars();
-            renderCRT();
-            requestAnimationFrame(animate);
+        // Render once
+        renderStars();
+        renderCRT();
+
+        // Button functions
+        function openLivestream() {
+            window.open('https://pump.fun/coin/F32iSjUL7fT2ZjCRYpjwuLjLE3SCuNVWzxu8xtgPpump', '_blank');
         }
-        animate();
+
+        function copyContract() {
+            const address = 'F32iSjUL7fT2ZjCRYpjwuLjLE3SCuNVWzxu8xtgPpump';
+            navigator.clipboard.writeText(address).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'COPIED!';
+                btn.style.background = '#28a745';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = 'linear-gradient(135deg, var(--accent-blue), #16213e)';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
     </script>
 </body>
 </html>
-
-
-
-
-
-
