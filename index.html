@@ -1,392 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voidborn - Launch Page</title>
-    <style>
-        /* === Professional Space-Themed UI === */
-        :root {
-            --panel-bg: #ffffff;
-            --panel-accent: #1a1a2e;
-            --text-primary: #0f0f23;
-            --text-secondary: #4a4a60;
-            --accent-blue: #0f3460;
-            --accent-gold: #d4af37;
-            --border-color: #e0e0e0;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html, body {
-            height: 100%;
-            margin: 0;
-            font-family: var(--font);
-            background: linear-gradient(135deg, #0c0c1a 0%, #1a1a2e 100%);
-            color: var(--text-primary);
-            overflow: hidden;
-        }
-        #app {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        #simulation {
-            flex: 1;
-            background: #000;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overflow: hidden;
-        }
-        canvas#bgCanvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-        #crtOverlay {
-            pointer-events: none;
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            mix-blend-mode: overlay;
-            opacity: 0.2;
-            z-index: 50;
-        }
-        /* Main UI panel - Clean and professional */
-        #ui {
-            width: 650px;
-            padding: 24px;
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow), 0 0 20px rgba(26, 26, 46, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            overflow: auto;
-            height: 85vh;
-            max-height: 850px;
-            margin: auto;
-            z-index: 100;
-            position: relative;
-            border-radius: 8px;
-        }
-        header#title {
-            background: var(--panel-accent);
-            color: #fff;
-            padding: 16px;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: 600;
-            margin: 0 0 12px 0;
-            box-shadow: var(--shadow);
-        }
-        p {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 16px;
-            padding: 16px;
-            background: #f8f9fa;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-        /* Collapsible sections - Subtle */
-        details {
-            background: #f8f9fa;
-            border: 1px solid var(--border-color);
-            padding: 16px;
-            margin-bottom: 16px;
-            border-radius: 4px;
-            transition: box-shadow 0.2s ease;
-        }
-        details[open] {
-            box-shadow: var(--shadow);
-        }
-        summary {
-            font-weight: 600;
-            cursor: pointer;
-            outline: none;
-            padding: 8px;
-            color: var(--accent-blue);
-            border-radius: 4px;
-        }
-        .feature-list {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 12px;
-        }
-        .feature-list li {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            margin: 8px 0;
-            font-size: 14px;
-            border-radius: 4px;
-            box-shadow: var(--shadow);
-            position: relative;
-            transition: box-shadow 0.2s ease;
-        }
-        .feature-list li:hover {
-            box-shadow: 0 4px 12px rgba(15, 52, 96, 0.15);
-        }
-        .feature-list li::before {
-            content: '•';
-            color: var(--accent-gold);
-            margin-right: 12px;
-            font-size: 18px;
-        }
-        /* Buttons - Professional style */
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            border: 1px solid var(--border-color);
-            background: #fff;
-            font-weight: 500;
-            cursor: pointer;
-            margin: 8px 0;
-            text-align: center;
-            text-decoration: none;
-            color: var(--text-primary);
-            border-radius: 4px;
-            box-shadow: var(--shadow);
-            transition: box-shadow 0.2s ease;
-        }
-        .btn:hover {
-            box-shadow: 0 4px 12px rgba(15, 52, 96, 0.15);
-        }
-        .play-button {
-            font-size: 18px;
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent-blue), #16213e);
-            color: #fff;
-            border: none;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(15, 52, 96, 0.3);
-        }
-        .play-button:hover {
-            box-shadow: 0 6px 16px rgba(15, 52, 96, 0.4);
-            transform: translateY(-1px);
-        }
-        /* Action row */
-        .action-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin: 16px 0;
-        }
-        .action-item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-        .livestream-btn, .contract-btn {
-            font-size: 14px;
-            padding: 12px;
-            background: linear-gradient(135deg, var(--accent-blue), #16213e);
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-weight: 500;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: box-shadow 0.2s ease;
-            width: 100%;
-        }
-        .livestream-btn:hover, .contract-btn:hover {
-            box-shadow: 0 4px 12px rgba(15, 52, 96, 0.3);
-        }
-        .copy-hint {
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-        .social {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin: 20px 0;
-        }
-        .social a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 24px;
-            transition: color 0.2s ease;
-        }
-        .social a:hover {
-            color: var(--accent-gold);
-        }
-        footer {
-            margin-top: auto;
-            font-size: 12px;
-            text-align: center;
-            opacity: 0.7;
-            color: #fff;
-        }
-        /* Responsiveness */
-        @media (max-width: 768px) {
-            #ui {
-                width: 90%;
-                height: 90vh;
-                padding: 16px;
-            }
-            header#title {
-                font-size: 24px;
-            }
-            .play-button {
-                font-size: 16px;
-            }
-            .action-row {
-                flex-direction: column;
-            }
-            .social {
-                gap: 16px;
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Voidborn • Retro Launch Page</title>
+<style>
+  /* =========================
+     90s / Win95-ish aesthetic
+     ========================= */
+  :root{
+    --win-gray:#c0c0c0;
+    --win-dark:#808080;
+    --win-darker:#404040;
+    --win-light:#ffffff;
+    --win-blue:#000080;
+    --win-green:#008080;
+    --text:#000000;
+
+    --crt-scanlines: 0.12;
+  }
+
+  *{box-sizing:border-box}
+  html,body{
+    height:100%;
+    margin:0;
+    color:var(--text);
+    /* Classic system font stack w/ 90s feel */
+    font-family: "MS Sans Serif","Tahoma","Geneva","Verdana",system-ui,sans-serif;
+    image-rendering: pixelated;
+    cursor: default;
+    overflow:hidden;
+  }
+
+  /* Tile-y, dither-y background (CSS-only, no assets) */
+  body{
+    background:
+      radial-gradient(#1d1b53, transparent 60%) center/600px 600px no-repeat,
+      linear-gradient(45deg,#181818 25%,transparent 25%) 0 0/16px 16px,
+      linear-gradient(-45deg,#202020 25%,transparent 25%) 0 0/16px 16px,
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%) 0 0/16px 16px,
+      linear-gradient(-45deg,transparent 75%,#202020 75%) 0 0/16px 16px,
+      #0b0b0f;
+  }
+
+  #app{
+    position:relative;
+    height:100vh; width:100vw;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* Canvas starfield/CRT layers */
+  #simulation{position:absolute; inset:0; z-index:0; overflow:hidden;}
+  #bgCanvas,#crtOverlay{display:block; width:100%; height:100%;}
+  #crtOverlay{pointer-events:none; mix-blend-mode:overlay; opacity:0.25;}
+
+  /* Window chrome */
+  .window{
+    position:relative;
+    width:min(780px, 92vw);
+    max-height:90vh;
+    display:flex; flex-direction:column;
+    background:var(--win-gray);
+    border:2px solid var(--win-light);
+    border-right-color:var(--win-darker);
+    border-bottom-color:var(--win-darker);
+    box-shadow: 0 0 0 1px var(--win-dark), 6px 6px 0 #00000044;
+    z-index:1;
+  }
+  .titlebar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:4px 6px;
+    color:#fff; background:linear-gradient(#0000a0,#000060);
+    font-weight:700; letter-spacing:.3px;
+    text-shadow:1px 1px 0 #000;
+    user-select:none;
+  }
+  .titlebar .title{
+    display:flex; align-items:center; gap:8px;
+  }
+  .titlebar .title .badge{
+    width:14px; height:14px; background:#00ffff; border:1px solid #004040;
+    box-shadow: inset 2px 2px 0 #80ffff, inset -2px -2px 0 #007070;
+  }
+  .titlebar .controls{display:flex; gap:4px;}
+  .win-btn{
+    width:18px; height:18px;
+    background:var(--win-gray);
+    border:2px solid var(--win-light);
+    border-right-color:var(--win-darker);
+    border-bottom-color:var(--win-darker);
+    display:grid; place-items:center;
+    font-size:12px; line-height:0; cursor:pointer;
+  }
+  .win-btn:active{
+    border:2px solid var(--win-darker);
+    border-right-color:var(--win-light);
+    border-bottom-color:var(--win-light);
+  }
+
+  .content{
+    display:flex; gap:8px;
+    padding:8px;
+  }
+
+  /* Left column: sticker stack / nav */
+  .sidebar{
+    width:170px;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .panel{
+    background:var(--win-gray);
+    border:2px solid var(--win-light);
+    border-right-color:var(--win-darker);
+    border-bottom-color:var(--win-darker);
+    padding:8px;
+  }
+  .panel h3{
+    font-size:12px; margin:0 0 6px 0; background:#000080; color:#fff; padding:2px 4px;
+  }
+
+  /* Center column */
+  .main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    min-width:0;
+  }
+
+  .hero{
+    padding:10px;
+    background:
+      linear-gradient(135deg,#f8f8f8 0%,#d9d9d9 100%);
+    border:2px solid var(--win-light);
+    border-right-color:var(--win-darker);
+    border-bottom-color:var(--win-darker);
+  }
+
+  .hero h1{
+    font-size:20px; margin:0 0 8px 0; display:flex; align-items:center; gap:8px;
+  }
+
+  .hero .sub{
+    font-size:12px; margin-bottom:10px;
+  }
+
+  /* Marquee = unapologetically 90s */
+  .tape-marquee{
+    border:2px solid var(--win-dark);
+    background:#000; color:#0f0;
+    font-family: "Lucida Console","Courier New",monospace;
+    font-size:12px;
+  }
+  .tape-marquee marquee{ padding:4px 0; }
+
+  /* Feature list with 90s bullets */
+  .features{
+    padding:8px;
+    background:#dfdfdf;
+    border:2px solid var(--win-light);
+    border-right-color:var(--win-darker);
+    border-bottom-color:var(--win-darker);
+  }
+  .features ul{margin:6px 0 0 18px; padding:0;}
+  .features li{
+    margin:6px 0;
+    list-style: square;
+  }
+
+  /* Big "Enter" button with plastic look */
+  .play-button{
+    display:block; width:100%;
+    text-align:center; text-decoration:none;
+    margin-top:4px; padding:12px 10px;
+    color:#fff; font-weight:700; letter-spacing:.5px;
+    background:
+      linear-gradient(#3cb6ff,#1560bd);
+    border:2px solid var(--win-light);
+    border-right-color:var(--win-darker);
+    border-bottom-color:var(--win-darker);
+    box-shadow: inset 0 0 0 2px #0a2a60;
+    text-shadow:1px 1px 0 #001a3a;
+    cursor:pointer;
+  }
+  .play-button:active{
+    border:2px solid var(--win-darker);
+    border-right-color:var(--win-light);
+    border-bottom-color:var(--win-light);
+    transform: translateY(1px);
+  }
+
+  /* Social row: icon-y buttons */
+  .social{
+    display:flex; gap:8px; justify-content:center; padding:6px 0;
+  }
+  .social a{
+    display:inline-block; min-width:44px; text-align:center; padding:6px 8px; text-decoration:none; color:#000;
+    background:var(--win-gray);
+    border:2px solid var(--win-light);
+    border-right-color:var(--win-darker);
+    border-bottom-color:var(--win-darker);
+    font-weight:700;
+  }
+  .social a:active{
+    border:2px solid var(--win-darker);
+    border-right-color:var(--win-light);
+    border-bottom-color:var(--win-light);
+  }
+
+  /* Footer */
+  footer{
+    font-size:11px; text-align:center; padding:6px; color:#111;
+    background:#d0d0d0; border-top:1px solid #fff; user-select:none;
+  }
+
+  /* Cute 90s stickers */
+  .sticker{
+    border:2px dashed #008000;
+    background:#ffe;
+    padding:6px; font-size:12px; text-align:center;
+  }
+  .sticker--under{
+    border-color:#ff8c00;
+    background:#fff7e6;
+  }
+
+  /* Responsive */
+  @media (max-width:700px){
+    .content{flex-direction:column;}
+    .sidebar{width:auto; order:2;}
+    .main{order:1;}
+  }
+</style>
 </head>
 <body>
-    <div id="app">
-        <div id="simulation">
-            <canvas id="bgCanvas"></canvas>
-            <canvas id="crtOverlay"></canvas>
-        </div>
-
-        <div id="ui">
-            <header id="title">🕹️ Voidborn</header>
-
-            <p>Boot up a retro-fueled universe simulation! Watch NPCs colonize a 4000x3000 grid, forge factions, climb tech tiers, and battle cosmic chaos!</p>
-
-            <details open>
-                <summary>Game Features</summary>
-                <ul class="feature-list">
-                    <li>Procedural Universe: Navigate a massive 4000x3000 grid teeming with resources, buildings, and dynamic NPCs.</li>
-                    <li>Tech Progression: Evolve from Pioneer to Galactic with farms, mines, temples, factories, portals, and epic wonders.</li>
-                    <li>Factions & Events: Witness faction wars, alliances, and cosmic events like UFO visits or cataclysmic disasters.</li>
-                    <li>Retro 90s UI: Rock a Windows 95-style interface with minimaps, event logs, and colony stats.</li>
-                    <li>Exploration & Building: NPCs with Explorer, Builder, or Warrior traits roam, construct, and unearth rare artifacts.</li>
-                </ul>
-            </details>
-
-            <a href="https://theonleoneneo.github.io/VOIDBORN-v4.2/" class="btn play-button">Enter the Void!</a>
-
-            <div class="action-row">
-                <div class="action-item">
-                    <button class="livestream-btn btn" onclick="openLivestream()">LIVESTREAM</button>
-                </div>
-                <div class="action-item">
-                    <button class="contract-btn btn" onclick="copyContract()">Contract Address</button>
-                    <small class="copy-hint">Click to copy</small>
-                </div>
-            </div>
-
-            <div class="social">
-                <a href="https://x.com/voidbornspace">🐦</a>
-                <a href="https://discord.com/invite/FYrQbCN7Nf">💬</a>
-            </div>
-
-            <footer>&copy; 2025 Voidborn.</footer>
-        </div>
+  <div id="app">
+    <div id="simulation">
+      <canvas id="bgCanvas"></canvas>
+      <canvas id="crtOverlay"></canvas>
     </div>
 
-    <script>
-        // Static space background
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
-        const crt = document.getElementById('crtOverlay');
-        const crtCtx = crt.getContext('2d');
+    <section class="window" role="dialog" aria-label="Voidborn Launcher">
+      <div class="titlebar">
+        <div class="title">
+          <div class="badge" aria-hidden="true"></div>
+          <span>VOIDBORN.EXE</span>
+        </div>
+        <div class="controls">
+          <div class="win-btn" title="Minimize">_</div>
+          <div class="win-btn" title="Maximize">▢</div>
+          <div class="win-btn" title="Close">X</div>
+        </div>
+      </div>
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            crt.width = canvas.width;
-            crt.height = canvas.height;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+      <div class="content">
+        <!-- LEFT: Stickers / Quick notes -->
+        <aside class="sidebar">
+          <div class="panel">
+            <h3>INFO</h3>
+            <div class="sticker">Galaxy Size: <b>4000×3000</b></div>
+          </div>
+          <div class="panel">
+            <h3>STATUS</h3>
+            <div class="sticker sticker--under">⚠ Under Construction</div>
+          </div>
+          <div class="panel">
+            <h3>TIPS</h3>
+            <ul style="margin:0 0 0 16px; font-size:12px;">
+              <li>Zoom the minimap.</li>
+              <li>Track factions.</li>
+              <li>Watch tech tiers rise.</li>
+            </ul>
+          </div>
+        </aside>
 
-        // Render static stars
-        function renderStars() {
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            // Static stars
-            const starCount = 200;
-            for (let s = 0; s < starCount; s++) {
-                const sx = (s * 37) % canvas.width;
-                const sy = (s * 97) % canvas.height;
-                ctx.fillStyle = '#001b1b';
-                ctx.fillRect(sx, sy, 1, 1);
-            }
-            // Static nebula
-            ctx.fillStyle = 'rgba(0, 100, 100, 0.1)';
-            for (let n = 0; n < 5; n++) {
-                const nx = canvas.width / 2 + Math.sin(n) * 200;
-                const ny = canvas.height / 2 + Math.cos(n) * 200;
-                ctx.beginPath();
-                ctx.arc(nx, ny, 100, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+        <!-- CENTER: Main -->
+        <main class="main">
+          <div class="hero">
+            <h1>🕹️ VOIDBORN <span style="font-size:12px; font-weight:400; opacity:.8;">v9X</span></h1>
+            <div class="sub">Boot up a retro-fueled universe simulation! NPCs colonize, form factions, climb tech tiers, and clash across the void.</div>
 
-        // Static CRT overlay
-        function renderCRT() {
-            crtCtx.clearRect(0, 0, crt.width, crt.height);
-            crtCtx.fillStyle = 'rgba(0,0,0,0.15)';
-            crtCtx.fillRect(0, 0, crt.width, crt.height);
-            crtCtx.fillStyle = 'rgba(0,0,0,0.05)';
-            for (let y = 0; y < crt.height; y += 2) {
-                crtCtx.fillRect(0, y, crt.width, 1);
-            }
-            crtCtx.strokeStyle = 'rgba(255,255,255,0.03)';
-            crtCtx.strokeRect(1, 1, crt.width - 2, crt.height - 2);
-        }
+            <div class="tape-marquee" aria-live="polite">
+              <marquee behavior="scroll" direction="left" scrollamount="5">
+                [NEW] Procedural galaxies • Faction AI • Wonders & Portals • Random UFO Sightings • Cosmic Disasters • Retro UI Modes
+              </marquee>
+            </div>
 
-        // Render once
-        renderStars();
-        renderCRT();
+            <a class="play-button" href="https://theonleoneneo.github.io/Voidborn-V2/">▶ ENTER THE VOID</a>
+          </div>
 
-        // Button functions
-        function openLivestream() {
-            window.open('https://pump.fun/coin/F32iSjUL7fT2ZjCRYpjwuLjLE3SCuNVWzxu8xtgPpump', '_blank');
-        }
+          <div class="features">
+            <strong>FEATURES</strong>
+            <ul>
+              <li>Procedural Universe: Explore a massive 4000×3000 grid buzzing with resources & NPC activity.</li>
+              <li>Tech Progression: From Pioneers to Galactic—farms, mines, temples, factories, portals, wonders.</li>
+              <li>Factions & Events: Alliances, wars, UFO visits, & spectacular cataclysms.</li>
+              <li>Authentic 90s Vibe: Window chrome, CRT scanlines, marquee, and pixel-perfect UI.</li>
+              <li>Explorer / Builder / Warrior traits drive emergent behavior and discoveries.</li>
+            </ul>
+          </div>
 
-        function copyContract() {
-            const address = 'F32iSjUL7fT2ZjCRYpjwuLjLE3SCuNVWzxu8xtgPpump';
-            navigator.clipboard.writeText(address).then(() => {
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = 'COPIED!';
-                btn.style.background = '#28a745';
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.background = 'linear-gradient(135deg, var(--accent-blue), #16213e)';
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        }
-    </script>
+          <div class="panel">
+            <h3>COMMUNITY</h3>
+            <div class="social">
+              <a href="https://x.com/voidbornspace" title="Follow on X/Twitter">🐦 X</a>
+              <a href="https://discord.com/invite/FYrQbCN7Nf" title="Join Discord">💬 Discord</a>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <footer>© 2025 Voidborn • Best viewed on a 1024×768 CRT</footer>
+    </section>
+  </div>
+
+<script>
+  // ====== Simple static starfield + CRT overlay ======
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  const crt = document.getElementById('crtOverlay');
+  const cctx = crt.getContext('2d');
+
+  function resize(){
+    const w = window.innerWidth, h = window.innerHeight;
+    canvas.width = w; canvas.height = h;
+    crt.width = w; crt.height = h;
+    drawStars();
+    drawCRT();
+  }
+  window.addEventListener('resize', resize);
+
+  function seededRand(seed){
+    // Basic LCG for reproducible sprinkle
+    let x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  }
+
+  function drawStars(){
+    const {width:w, height:h} = canvas;
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0,0,w,h);
+
+    // Distant nebulas (soft blobs)
+    for(let n=0;n<5;n++){
+      const nx = (n*137)%w, ny = (n*89)%h, r = 120 + (n*7);
+      const g = ctx.createRadialGradient(nx,ny,0,nx,ny,r);
+      g.addColorStop(0,'rgba(0, 150, 255, 0.08)');
+      g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(nx,ny,r,0,Math.PI*2); ctx.fill();
+    }
+
+    // Stars
+    for(let i=0;i<250;i++){
+      const x = (i*37)%w;
+      const y = (i*97)%h;
+      ctx.fillStyle = i%7===0 ? '#aaf' : (i%5===0 ? '#fff' : '#ccd');
+      ctx.fillRect(x, y, 1, 1);
+    }
+  }
+
+  function drawCRT(){
+    const {width:w, height:h} = crt;
+    cctx.clearRect(0,0,w,h);
+
+    // Slight vignette
+    const vg = cctx.createRadialGradient(w/2,h/2,0,w/2,h/2, Math.max(w,h)/1.2);
+    vg.addColorStop(0,'rgba(0,0,0,0)');
+    vg.addColorStop(1,'rgba(0,0,0,0.35)');
+    cctx.fillStyle = vg;
+    cctx.fillRect(0,0,w,h);
+
+    // Scanlines
+    cctx.globalAlpha = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--crt-scanlines')) || 0.12;
+    cctx.fillStyle = '#000';
+    for(let y=0; y<h; y+=2){ cctx.fillRect(0,y,w,1); }
+    cctx.globalAlpha = 1;
+    // Bezel
+    cctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    cctx.lineWidth = 2;
+    cctx.strokeRect(3,3,w-6,h-6);
+  }
+
+  // Fake window controls (cosmetic)
+  document.querySelectorAll('.win-btn[title="Close"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>alert('Closing Voidborn.exe is not recommended while in hyperspace.'));
+  });
+
+  resize(); // initial draw
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
